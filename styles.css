@@ -1,0 +1,12 @@
+.container {
+    width: 100%;
+    width: 50%;
+    margin: auto;
+    text-align: center;
+}
+
+.card {
+    margin: 2em 0 2em 0;
+    border: 1px solid grey;
+    border-radius: 10px;
+}
