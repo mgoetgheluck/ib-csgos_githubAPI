@@ -10,3 +10,11 @@
     border: 1px solid grey;
     border-radius: 10px;
 }
+
+.errorLoginContainer {
+    background-color: red;
+}
+
+.successLoginContainer {
+    background-color: green;
+}

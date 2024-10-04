@@ -1,4 +1,4 @@
-(function(){
+const requeteGithub = function(){
     console.log("REQ START");
     var req = new XMLHttpRequest();
     req.open('GET', 'https://api.github.com/users?per_page=8');
@@ -11,7 +11,7 @@
     });
 
     req.send();
-})();
+};
 
 const handleResponse = function(responseString) {
     console.log("handleResponse", responseString);
@@ -68,4 +68,104 @@ const createGitHubUserCard = function(user){
         const root = document.querySelector("#root");
         root.appendChild(divCard);
 
+}
+
+const creerCompteButtonHandler = function(e){
+    //Removing children of errorLoginContainer
+    const errorLoginContainer = document.querySelector(".errorLoginContainer");
+    clearContainer(errorLoginContainer);
+
+    // Removing children of successLoginContainer
+    const successLoginContainer = document.querySelector(".successLoginContainer");
+    clearContainer(successLoginContainer);
+
+    
+    console.log("creerCompteButtonHandler", e);
+    const login = document.querySelector("#login").value;
+    console.log("creerCompteHandler", login);
+    const password = document.querySelector("#password").value;
+    console.log("creerCompteHandler", password);
+    let isAccepted = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/.test(password);
+    if(isAccepted){
+        localStorage.setItem("login", login);
+        localStorage.setItem("password", password);
+
+        const successNode = createSuccessNode("Votre compte a bien été créé.");
+        successLoginContainer.appendChild(successNode);
+    }
+    else {
+        
+
+        if(!/[A-Z]+/.test(password)) {
+            needMajuscules = true;
+            const errorNode = createErrorNode("Votre mot de passe doit contenir des majuscules.");
+            errorLoginContainer.appendChild(errorNode);
+        }
+        if(!/[a-z]+/.test(password)){
+            const errorNode = createErrorNode("Votre mot de passe doit contenir des minuscules.");
+            errorLoginContainer.appendChild(errorNode);
+        }
+        if(!/^(?=.*?[0-9])$/.test(password)){
+            const errorNode = createErrorNode("Votre mot de passe doit contenir des nombres.");
+            errorLoginContainer.appendChild(errorNode);
+        }
+        if(password.length < 8){
+            const errorNode = createErrorNode("Votre mot de passe doit contenir au moins 8 caractères.");
+            errorLoginContainer.appendChild(errorNode);
+        }
+    }
+}
+
+const loginButtonHandler = function(e){
+    //Removing children of errorLoginContainer
+    const errorLoginContainer = document.querySelector(".errorLoginContainer");
+    clearContainer(errorLoginContainer);
+    // Removing children of successLoginContainer
+    const successLoginContainer = document.querySelector(".successLoginContainer");
+    clearContainer(successLoginContainer);
+
+
+    const checkLogin = localStorage.getItem("login");
+    console.log("localstorage", checkLogin);
+    const checkPassword = localStorage.getItem("password");
+    const login = document.querySelector("#login").value;
+    const password = document.querySelector("#password").value;
+
+    if(checkLogin == login && checkPassword == password){
+        allowAccess();
+    }
+    else {
+        const errorNode = createErrorNode("Votre login n'est pas correct.");
+        errorLoginContainer.appendChild(errorNode);
+    }
+
+}
+
+const allowAccess = function() {
+    document.querySelector(".loginContainer").style.display = "none"
+    requeteGithub();
+}
+
+const createErrorNode = function(errorMessage){
+    const errorNode = document.createElement('div');
+    const errorMessageNode = document.createElement("span");
+    errorMessageNode.innerHTML = errorMessage;
+    errorNode.appendChild(errorMessageNode);
+
+    return errorNode;
+}
+
+const createSuccessNode = function(successMessage){
+    const successNode = document.createElement('div');
+    const successMessageNode = document.createElement("span");
+    successMessageNode.innerHTML = successMessage;
+    successNode.appendChild(successMessageNode);
+
+    return successNode;
+}
+
+clearContainer = function(container){
+    while (container.firstChild) {
+        container.removeChild(container.lastChild);
+    }
 }

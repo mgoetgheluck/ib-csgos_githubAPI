@@ -14,7 +14,26 @@
             <div>
                 <span>Aim of this exercise is to consume GitHub API in order to get 8 random profiles and to display them</span>
             </div>
-            <div id="root"></div>
+            <div class="loginContainer">
+                <div>
+                    <span>Veuillez vous connecter pour accéder aux informations</span>
+                </div>
+                <form>
+                    <label for="login">Login :</label>
+                    <input type="text" id="login" name="login" required>
+                    <br />
+                    <label for="password">Password :</label>
+                    <input type="password" id="password" name="password" required>
+                    <br />
+                    <button type="button" onclick="loginButtonHandler()">Login</button>
+                    <button type="button" onclick="creerCompteButtonHandler()">Se créer un compte</button>
+                </form>
+            </div>
+            <div class="errorLoginContainer"></div>
+            <div class="successLoginContainer"></div>
+            <div class="githubContainer">
+                <div id="root"></div>
+            </div>
         </div>
         <script src="index.js"></script>
     </body>
